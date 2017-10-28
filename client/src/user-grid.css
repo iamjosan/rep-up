@@ -1,0 +1,7 @@
+#user-grid img{
+	width:100%;
+	height:auto;
+	}
+#user-grid .col{
+	overflow:hidden;
+	}

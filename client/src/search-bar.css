@@ -1,0 +1,10 @@
+.search-bar .material-icons{
+	position: absolute;
+	width: 3rem;
+	font-size: 2rem;
+	transition: color .2s;
+	}
+.search-bar input{
+	margin-left: 3rem;
+	width:80%;
+}

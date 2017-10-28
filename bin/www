@@ -1,0 +1,123 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('my-express-app:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3001');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen to browser with socket.io
+ */
+ 
+const io = require('socket.io')(server);
+const dbConn = require('../routes/dbConnect');
+
+io.on('connection', client => {
+	console.log('client connected');
+	client.on('fetch user', username => {
+		let sqlGetUser = 'SELECT b.username, b.avatar, COUNT(a.user_id) AS rep FROM experience a JOIN users b ON a.user_id = b.id WHERE b.username = ? AND a.approved = 1 AND b.approved = 1 GROUP BY b.username';
+		dbConn.query(sqlGetUser, [username], (err,result,fields) => {
+			if(err) throw err;
+			client.emit('send user', result);
+		});
+	});
+	
+	client.on('user login', login => {
+		let sqlLogin = 'SELECT b.*, COUNT(a.user_id) AS rep FROM experience a JOIN users b ON a.user_id = b.id WHERE b.username = ? AND a.approved = 1 AND b.approved = 1 AND password = ? GROUP BY b.username';
+		dbConn.query(sqlLogin, [login.username, login.password], (err, result, fields) => {
+			if(err) throw err;
+			client.emit('user login', result);
+		});
+	});
+	
+	client.on('fetch users all', data => {
+		dbConn.query('SELECT username, avatar FROM users WHERE approved = 1', (err, result, fields) => {
+			if(err) throw err;
+			client.emit('fetch users all', result);
+		});
+	});
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

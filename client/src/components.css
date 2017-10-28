@@ -1,0 +1,39 @@
+/*
+span.badge.new:after{
+	content: '' !important;
+	}
+*/
+.rep-badge{
+	border-radius:100% !important;
+	height:32px !important;
+	width:32px !important;
+	line-height:32px !important;
+	padding:0 !important;
+	margin-right:-12px !important;
+	min-width:0 !important;
+	background-color:#26a69a !important;
+	color:white !important;
+	font-size:0.8rem !important;
+	font-weight:300 !important;
+}
+.rep-badge:after{
+	content: '' !important;
+}
+.avatar{
+	width:180px;
+	height:180px;
+	overflow:hidden;
+	display:inline-block;
+	margin-top:15px;
+	margin-bottom:-15px;
+	margin-left:0 auto;
+	margin-right:0 auto;
+	box-shadow:0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+}
+.avatar > img{
+	width:100%;
+	height:auto;
+}
+#profile-settings a{
+	display: block;
+}
