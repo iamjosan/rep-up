@@ -27,6 +27,9 @@ var server = http.createServer(app);
  
 const io = require('socket.io')(server);
 const dbConn = require('../routes/dbConnect');
+//file upload with socket.io
+const siofu = require('socketio-file-upload');
+app.use(siofu.router);
 
 io.on('connection', client => {
 	console.log('client connected');
@@ -52,6 +55,23 @@ io.on('connection', client => {
 			client.emit('fetch users all', result);
 		});
 	});
+	
+	//file upload
+	let uploader = new siofu();
+	uploader.dir = '/Users/Admin/my-express-app/proof/pending';
+	uploader.listen(client);
+	uploader.on('saved', event => {
+		//get today's date
+		let d = new Date();
+		let today = [d.getFullYear(), d.getMonth(), d.getDate()];
+		let todaysDate = today.join('-');
+		//save to database
+		dbConn.query('INSERT INTO experience (user_id, proof, date_added) VALUES (?, ?, ?)', [event.file.meta.userId, event.file.name, todaysDate], (err, result, fields) => {
+			if(err) throw err;
+			client.emit('upload file done', 'success');
+		});
+	});
+	uploader.on('error', event => console.log(event));
 });
 
 /**

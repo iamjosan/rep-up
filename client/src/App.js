@@ -8,6 +8,7 @@ import LoginPage from './containers/LoginPage';
 import LogOutLink from './containers/LogOutLink';
 import Footer from './Footer';
 import UsersAll from './UsersAll';
+import NewRep from './NewRep';
 
 class Main extends Component{
 	constructor(props){
@@ -28,6 +29,7 @@ class Main extends Component{
 				<Route exact path="/users" component={UsersAll} />
 				<Route path="/users/:username" render={(obj) => <Profile reduxStore={this.props.userSession} match={obj.match} profileType="view" />} />
 				<Route path="/profile" render={(obj) => <Profile profileType="edit" match={obj.match} reduxStore={this.props.userSession} /> } />
+				<Route path="/new-rep" render={(ob) => <NewRep reduxStore={this.props.userSession} />} />
 				<Route path="/login">
 					<Redirect to="/" />
 				</Route>

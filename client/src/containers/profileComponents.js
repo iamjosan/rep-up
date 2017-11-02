@@ -1,18 +1,3 @@
-/*
-//fetch user from database
-function fetchUser(saveState){
-	//send data to server
-	socket.emit('fetch user', this.props.match.params.username);
-	//listen to server to receive data
-	socket.on('send user', userInfo => {
-		saveState({user: userInfo[0]});
-	});
-}
-//set user from redux store
-function storeUser(saveState, stateUser){
-	saveState({user: stateUser});
-}
-*/
 export function userProfile(type, prop, stateSetter, socket = null){
 	const obj = {
 		fetch: () => {
