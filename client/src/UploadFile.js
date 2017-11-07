@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client';
 import { Input, Button, ProgressBar, Preloader } from 'react-materialize';
 const SocketIOFileUpload = require('socketio-file-upload');
-
-const socket = io();
 
 class UploadFile extends Component{
 	constructor(props){
@@ -13,7 +10,7 @@ class UploadFile extends Component{
 	}
 	
 	componentDidMount(){
-		const uploader = new SocketIOFileUpload(socket);
+		const uploader = new SocketIOFileUpload(this.props.socket);
 		uploader.listenOnSubmit(document.querySelector('#file-upload-btn'), document.querySelector('#file-upload-input'));
 		uploader.addEventListener('start', event => {
 			event.file.meta.userId = this.user.id;
@@ -23,7 +20,7 @@ class UploadFile extends Component{
 		uploader.addEventListener('choose', event => this.setState({progress: 0, saved: false }));
 		uploader.addEventListener('progress', event => this.setState({progress: (event.bytesLoaded / event.file.size) * 100}));
 		
-		socket.on('upload file done', (msg) => this.setState({saved: true}));
+		this.props.socket.on('upload file done', (msg) => this.setState({saved: true}));
 	}
 		
 	

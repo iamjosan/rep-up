@@ -9,6 +9,10 @@ import LogOutLink from './containers/LogOutLink';
 import Footer from './Footer';
 import UsersAll from './UsersAll';
 import NewRep from './NewRep';
+import Register from './Register';
+import io from 'socket.io-client';
+
+const socket = io();
 
 class Main extends Component{
 	constructor(props){
@@ -20,16 +24,17 @@ class Main extends Component{
 		return(
 			<main className="container">
 			{Object.keys(this.props.userSession.user).length === 0
-			? 	<div>
+			? 	<Switch>
+					<Route path="/register" render={(obj) => <Register socket={socket} />} /> 
+					<Route path="/login" render={(obj) => <LoginPage socket={socket} history={obj.history} />} />
 					<Redirect to="/login" />
-					<Route path="/login" component={LoginPage} />
-				</div>
+				</Switch>
 			: <Switch>
 				<Route exact path="/" component={Ladder} />
-				<Route exact path="/users" component={UsersAll} />
-				<Route path="/users/:username" render={(obj) => <Profile reduxStore={this.props.userSession} match={obj.match} profileType="view" />} />
-				<Route path="/profile" render={(obj) => <Profile profileType="edit" match={obj.match} reduxStore={this.props.userSession} /> } />
-				<Route path="/new-rep" render={(ob) => <NewRep reduxStore={this.props.userSession} />} />
+				<Route exact path="/users" render={(obj) => <UsersAll history={obj.history} socket={socket} />} />
+				<Route path="/users/:username" render={(obj) => <Profile reduxStore={this.props.userSession} match={obj.match} profileType="view" socket={socket} />} />
+				<Route path="/profile" render={(obj) => <Profile profileType="edit" match={obj.match} reduxStore={this.props.userSession} socket={socket} /> } />
+				<Route path="/new-rep" render={(ob) => <NewRep reduxStore={this.props.userSession} socket={socket} />} />
 				<Route path="/login">
 					<Redirect to="/" />
 				</Route>

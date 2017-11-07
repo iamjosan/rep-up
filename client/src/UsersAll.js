@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import SearchBar from './SearchBar';
 import UserGrid from './UserGrid';
-import io from 'socket.io-client';
-
-const socket = io();
 
 class UsersAll extends Component{
 	constructor(props){
@@ -15,8 +12,8 @@ class UsersAll extends Component{
 	//pass data to autocomplete component
 	
 	fetchUsersAll(){
-		socket.emit('fetch users all', null);
-		socket.on('fetch users all', usersAll => {
+		this.props.socket.emit('fetch users all', null);
+		this.props.socket.on('fetch users all', usersAll => {
 			this.setState({users: usersAll});
 		});
 	}

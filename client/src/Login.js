@@ -1,23 +1,24 @@
-import io from 'socket.io-client';
 import React,{Component} from 'react';
 import {Row,Input,Button} from 'react-materialize';
-
-const socket = io();
 
 class Login extends Component{
 	constructor(props){
 		super(props);
 		this.login();
+		this.state = {error: false};
 	}
 	
 	formSubmit(e){
 		e.preventDefault();
-		socket.emit('user login', {username: e.target.querySelector('[type="text"]').value , password: e.target.querySelector('[type="password"]').value});
+		this.props.socket.emit('user login', {username: e.target.querySelector('[type="text"]').value , password: e.target.querySelector('[type="password"]').value});
 	}
 	
 	login(){
-		socket.on('user login', res => {
-			if(!res) throw new Error('Incorrect login');
+		this.props.socket.on('user login', res => {
+			if(!res){
+				this.setState({error: true});
+				return
+			}
 			console.log(res[0]);
 			//save session in state
 			//and in browser cache
@@ -31,12 +32,13 @@ class Login extends Component{
 	render(){
 		return(
 			<div>
-				<h1>Login Page</h1>
+				<h2>Login Page</h2>
 				<Row>
 					<form onSubmit={this.formSubmit.bind(this)}>
 						<Input type="text" label="username" s={12} />
 						<Input type="password" label="password" s={12} />
 						<Button waves="light">Login</Button>
+						<span style={{marginLeft: '15px', color: 'red'}}>{this.state.error ? 'Incorrect Login' : ''}</span>
 					</form>
 				</Row>
 			</div>

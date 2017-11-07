@@ -19,8 +19,8 @@ class UserGrid extends Component{
 	}
 	
 	userImages(){
-		let imgAll = this.state.users.map(user => (
-			<Col s={4}>
+		let imgAll = this.state.users.map((user, i) => (
+			<Col s={4} key={i} >
 				<Link to={'./users/' + user.username}>
 					<img src={require('./img/' + user.avatar)} alt={user.username} />
 				</Link>

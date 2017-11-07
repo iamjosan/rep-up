@@ -10,15 +10,16 @@ class NewRep extends Component{
 	render(){
 		return(
 			<div>
-				<Card header='New Rep Guidelines'>
-					In order for your proof of rep to accepted, it must meet the following guidelines:
+				<Card>
+					<h5>Guidelines</h5>
+					<p>In order for your proof of rep to accepted, it must meet the following guidelines:</p>
 					<ul>
 						<li>Rule 1</li>
 						<li>Rule 2</li>
 						<li>Rule 3</li>
 					</ul>
 				</Card>
-				<UploadFile reduxStore={this.props.reduxStore} />
+				<UploadFile reduxStore={this.props.reduxStore} socket={this.props.socket} />
 			</div>
 			)
 	}

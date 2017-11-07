@@ -1,10 +1,6 @@
-import io from 'socket.io-client';
 import React, {Component} from 'react';
-//import {Collection,CollectionItem,Row,Col} from 'react-materialize';
 import {ProfileHeader, ProfileSettings} from './Components';
 import {userProfile} from './containers/profileComponents';
-
-const socket = io();
 
 class Profile extends Component{
 	constructor(props){
@@ -15,7 +11,7 @@ class Profile extends Component{
 	
 	profileTypeData(type){
 		let obj = {
-			view: userProfile('fetch', this.props.match.params.username, this.setState.bind(this), socket),
+			view: userProfile('fetch', this.props.match.params.username, this.setState.bind(this), this.props.socket),
 			edit: userProfile('store', this.props.reduxStore, this.setState.bind(this))
 		};
 		return obj[type];
