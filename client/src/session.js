@@ -1,7 +1,7 @@
-import {createStore} from 'redux';
-import {sessionReducer, sessionService} from 'redux-react-session';
+import { createStore } from "redux";
+import { sessionReducer, sessionService } from "redux-react-session";
 
-const reducer = {session: sessionReducer};
+const reducer = { session: sessionReducer };
 const store = createStore(reducer);
 
 sessionService.initSessionService(store);

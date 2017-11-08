@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from "redux";
 /*
 {
 	user: {
@@ -12,7 +12,7 @@ const initialState = {login: false, user: null};
 
 function userSession(state = {}, action){
 	return {
-		login: login(state.login, action), 
+		login: login(state.login, action),
 		user: user(state.user, action)
 		}
 }
@@ -21,22 +21,22 @@ function login(state = false, action){
 	let obj = {
 		LOGGED_IN: Object.assign({}, state, action.status)
 	};
-	
+
 	return obj[action.type] || state
 }
 */
 
-function user(state = null, action){
-	let obj = {
-		LOG_IN: Object.assign({}, state, action.user),
-		LOG_OUT: {}
-	};
-	
-	return obj[action.type] || state
+function user(state = null, action) {
+  let obj = {
+    LOG_IN: Object.assign({}, state, action.user),
+    LOG_OUT: {}
+  };
+
+  return obj[action.type] || state;
 }
-	
+
 const userSession = combineReducers({
-	user
+  user
 });
 
 export default userSession;

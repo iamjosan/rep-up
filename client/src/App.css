@@ -1,5 +1,5 @@
-@import url('http://fonts.googleapis.com/icon?family=Material+Icons');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css');
+@import url("http://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css");
 
 .App {
   text-align: center;
@@ -22,6 +22,10 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
