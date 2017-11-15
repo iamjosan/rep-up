@@ -114,24 +114,92 @@ io.on("connection", client => {
     );
   });
 
-  //file upload
-  let uploader = new siofu();
-  uploader.dir = "/Users/Admin/my-express-app/proof/pending";
-  uploader.listen(client);
-  uploader.on("saved", event => {
-    //get today's date
-    let d = new Date();
-    let today = [d.getFullYear(), d.getMonth(), d.getDate()];
-    let todaysDate = today.join("-");
-    //save to database
+  //update profile data
+  client.on("change profile info", data => {
+    console.log(data);
+    //validate user's password
+    //if password validates, we can update the profile info
     dbConn.query(
-      "INSERT INTO experience (user_id, proof, date_added) VALUES (?, ?, ?)",
-      [event.file.meta.userId, event.file.name, todaysDate],
+      "SELECT username FROM users WHERE password = ?",
+      [hash(data.password)],
       (err, result, fields) => {
         if (err) throw err;
-        client.emit("upload file done", "success");
+        if (result.length === 0) {
+          return client.emit("change profile info", {
+            msg: "Invalid Password",
+            msgColor: "red"
+          });
+        }
+        let sql = {
+          email: "UPDATE users SET email = ? WHERE id = ?",
+          password: "UPDATE users SET password = ? WHERE id = ?"
+        };
+        let newData =
+          data.newDataType === "password"
+            ? hash(data.newData)
+            : data.newData.toLowerCase();
+        dbConn.query(
+          sql[data.newDataType],
+          [newData, data.userID],
+          (err, result, fields) => {
+            if (err) throw err;
+            client.emit("change profile info", {
+              msg: "Saved",
+              msgColor: "green"
+            });
+          }
+        );
       }
     );
+  });
+
+  //file upload
+  let uploader = new siofu();
+  uploader.listen(client);
+
+  uploader.on("start", event => {
+    //set directory based on upload type
+    const obj = {
+      CHANGE_AVATAR: "/Users/Admin/my-express-app/client/src/img",
+      NEW_REP: "/Users/Admin/my-express-app/proof/pending"
+    };
+
+    uploader.dir = obj[event.file.meta.uploadType];
+  });
+
+  uploader.on("saved", event => {
+    //perform a different query for each specific upload type
+    //possible upload types include: changing avatar image and uploading new
+    //image for experience
+    const obj = {
+      CHANGE_AVATAR: () => {
+        dbConn.query(
+          "UPDATE users SET avatar = ? WHERE id = ?",
+          [event.file.name, event.file.meta.userId],
+          (err, result, fields) => {
+            if (err) throw err;
+            client.emit("upload file done", event.file.name);
+          }
+        );
+      },
+      NEW_REP: () => {
+        //get today's date
+        let d = new Date();
+        let today = [d.getFullYear(), d.getMonth(), d.getDate()];
+        let todaysDate = today.join("-");
+        //save to database
+        dbConn.query(
+          "INSERT INTO experience (user_id, proof, date_added) VALUES (?, ?, ?)",
+          [event.file.meta.userId, event.file.name, todaysDate],
+          (err, result, fields) => {
+            if (err) throw err;
+            client.emit("upload file done", event.file.name);
+          }
+        );
+      }
+    };
+
+    obj[event.file.meta.uploadType]();
   });
   uploader.on("error", event => console.log(event));
 });

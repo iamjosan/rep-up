@@ -25,6 +25,7 @@ class NewRep extends Component {
         <UploadFile
           reduxStore={this.props.reduxStore}
           socket={this.props.socket}
+          uploadType="NEW_REP"
         />
       </div>
     );

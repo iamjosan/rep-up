@@ -16,6 +16,8 @@ class UploadFile extends Component {
       document.querySelector("#file-upload-input")
     );
     uploader.addEventListener("start", event => {
+      //pass upload type to meta
+      event.file.meta.uploadType = this.props.uploadType;
       event.file.meta.userId = this.user.id;
     });
 
@@ -27,9 +29,19 @@ class UploadFile extends Component {
       this.setState({ progress: event.bytesLoaded / event.file.size * 100 })
     );
 
-    this.props.socket.on("upload file done", msg =>
-      this.setState({ saved: true })
-    );
+    this.props.socket.on("upload file done", msg => {
+      let obj = {
+        CHANGE_AVATAR: () => {
+          this.props.onSave({ saved: true, image: msg }).then(() => {
+            this.props.updateState(msg);
+            this.setState({ saved: true });
+          });
+        },
+        NEW_REP: () => this.setState({ saved: true })
+      };
+
+      obj[this.props.uploadType]();
+    });
   }
 
   render() {

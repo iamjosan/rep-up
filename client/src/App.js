@@ -10,6 +10,7 @@ import Footer from "./Footer";
 import UsersAll from "./UsersAll";
 import NewRep from "./NewRep";
 import Register from "./Register";
+import UpdateProfile from "./containers/UpdateProfile";
 import io from "socket.io-client";
 
 const socket = io();
@@ -57,11 +58,42 @@ class Main extends Component {
               )}
             />
             <Route
+              exact
               path="/profile"
               render={obj => (
                 <Profile
                   profileType="edit"
                   match={obj.match}
+                  reduxStore={this.props.userSession}
+                  socket={socket}
+                />
+              )}
+            />
+            <Route
+              path="/profile/avatar"
+              render={obj => (
+                <UpdateProfile
+                  changeType="CHANGE_AVATAR"
+                  reduxStore={this.props.userSession}
+                  socket={socket}
+                />
+              )}
+            />
+            <Route
+              path="/profile/email"
+              render={obj => (
+                <UpdateProfile
+                  changeType="CHANGE_EMAIL"
+                  reduxStore={this.props.userSession}
+                  socket={socket}
+                />
+              )}
+            />
+            <Route
+              path="/profile/password"
+              render={obj => (
+                <UpdateProfile
+                  changeType="CHANGE_PASSWORD"
                   reduxStore={this.props.userSession}
                   socket={socket}
                 />
@@ -89,12 +121,15 @@ class Main extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = { reduxState: this.props.reduxState.getState() };
   }
-
+  componentDidMount() {
+    this.props.reduxState.subscribe(() => {
+      this.setState({ reduxState: this.props.reduxState.getState() });
+      console.log(this.props.reduxState.getState());
+    });
+  }
   render() {
-    const watchStore = this.props.reduxState.subscribe(() =>
-      console.log(this.props.reduxState.getState())
-    );
     return (
       <div>
         <Navbar brand="RepUp" href="#" right options={{ closeOnClick: true }}>
@@ -111,7 +146,7 @@ class App extends Component {
             <LogOutLink />
           </li>
         </Navbar>
-        <Main userSession={this.props.reduxState.getState()} />
+        <Main userSession={this.state.reduxState} />
         <Footer />
       </div>
     );
