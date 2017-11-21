@@ -26,21 +26,26 @@ var server = http.createServer(app);
  */
 
 const io = require("socket.io")(server);
-const dbConn = require("../routes/dbConnect");
+const pool = require("../routes/dbConnect");
 //file upload with socket.io
 const siofu = require("socketio-file-upload");
 app.use(siofu.router);
 //use this to create hashes for passwords
 const hash = require("string-hash");
+//send email with this
+const sendMail = require("../sendMail");
 
 io.on("connection", client => {
   console.log("client connected");
   client.on("fetch user", username => {
     let sqlGetUser =
       "SELECT users.username, users.avatar, COUNT(experience.user_id) AS rep FROM users LEFT JOIN experience ON users.id = experience.user_id AND experience.approved = 1 WHERE users.username = ? AND users.approved = 1 GROUP BY users.username";
-    dbConn.query(sqlGetUser, [username], (err, result, fields) => {
-      if (err) throw err;
-      client.emit("send user", result);
+    pool.getConnection((error, conn) => {
+      conn.query(sqlGetUser, [username], (err, result, fields) => {
+        conn.release();
+        if (err) throw err;
+        client.emit("send user", result);
+      });
     });
   });
 
@@ -48,70 +53,87 @@ io.on("connection", client => {
     //remove all whitespaces and make lowercase
     register.username = register.username.replace(/\s/g, "").toLowerCase();
     //check if username has been registered
-    dbConn.query(
-      "SELECT username FROM users WHERE  username = ?",
-      [register.username],
-      (err, result, fields) => {
-        if (err) throw err;
-        if (result.length > 0) {
-          return client.emit("user register", {
-            msg: "Username is taken",
-            msgColor: "red"
-          });
-        }
-        //get today's date and style it to be year-month-day
-        let d = new Date(),
-          today = [d.getFullYear(), d.getMonth() + 1, d.getDate()],
-          dateToday = today.join("-");
-
-        dbConn.query(
-          "INSERT INTO users (username, email, password, gll_name, date_join) VALUES (?, ?, ?, ?, ?)",
-          [
-            register.username,
-            register.email,
-            hash(register.password),
-            register.gllName,
-            dateToday
-          ],
-          (err, result, fields) => {
-            if (err) throw err;
-
-            client.emit("user register", {
-              msg: "Awaiting Approval",
-              msgColor: "green"
+    pool.getConnection((error, conn) => {
+      conn.query(
+        "SELECT username FROM users WHERE  username = ?",
+        [register.username],
+        (err, result, fields) => {
+          if (err) throw err;
+          if (result.length > 0) {
+            conn.release();
+            return client.emit("user register", {
+              msg: "Username is taken",
+              msgColor: "red"
             });
           }
-        );
-      }
-    );
+          //get today's date and style it to be year-month-day
+          let d = new Date(),
+            today = [d.getFullYear(), d.getMonth() + 1, d.getDate()],
+            dateToday = today.join("-");
+          let username = register.username.replace(/\s/g, "").toLowerCase(),
+            email = register.email.replace(/\s/g, "").toLowerCase();
+          conn.query(
+            "INSERT INTO users (username, email, password, gll_name, date_join) VALUES (?, ?, ?, ?, ?)",
+            [
+              username,
+              email,
+              hash(register.password),
+              register.gllName,
+              dateToday
+            ],
+            (err, result, fields) => {
+              conn.release();
+              if (err) throw err;
+              //send email if user registered successfully
+              let body = `
+<p>Thanks for registering to Rep Up!</p>
+<p>While you wait for your account to be approved, please verify your email address by following this link:
+<a href="http://repupserver.com/verify/${email}">Verify Email Address</a></p>
+<p>Thank you!\nRep Up Team</p>`;
+              sendMail(email, "Please Verify Your Rep Up Account", body);
+              client.emit("user register", {
+                msg: "Awaiting Approval",
+                msgColor: "green"
+              });
+            }
+          );
+        }
+      );
+    });
   });
 
   client.on("user login", login => {
     console.log(hash(login.password));
     let sqlLogin =
       "SELECT users.*, COUNT(experience.user_id) AS rep FROM users LEFT JOIN experience ON users.id = experience.user_id AND experience.approved = 1 WHERE users.username = ?  AND users.approved = 1 AND users.password = ? GROUP BY users.id";
-    dbConn.query(
-      sqlLogin,
-      [login.username, hash(login.password)],
-      (err, result, fields) => {
-        if (err) throw err;
-        console.log(result);
-        //if user login doesnt match
-        //return false
-        result = result.length > 0 ? result : false;
-        client.emit("user login", result);
-      }
-    );
+    pool.getConnection((error, conn) => {
+      conn.query(
+        sqlLogin,
+        [login.username, hash(login.password)],
+        (err, result, fields) => {
+          conn.release();
+          if (err) throw err;
+          console.log(result);
+          //if user login doesnt match
+          //return false
+          result = result.length > 0 ? result : false;
+          client.emit("user login", result);
+        }
+      );
+    });
   });
 
   client.on("fetch users all", data => {
-    dbConn.query(
-      "SELECT username, avatar FROM users WHERE approved = 1",
-      (err, result, fields) => {
-        if (err) throw err;
-        client.emit("fetch users all", result);
-      }
-    );
+    pool.getConnection((error, conn) => {
+      conn.query(
+        "SELECT username, avatar FROM users WHERE approved = 1",
+        (err, result, fields) => {
+          conn.release();
+          if (err) throw err;
+          client.emit("fetch users all", result);
+        }
+      );
+    });
   });
 
   //update profile data
@@ -119,38 +141,41 @@ io.on("connection", client => {
     console.log(data);
     //validate user's password
     //if password validates, we can update the profile info
-    dbConn.query(
-      "SELECT username FROM users WHERE password = ?",
-      [hash(data.password)],
-      (err, result, fields) => {
-        if (err) throw err;
-        if (result.length === 0) {
-          return client.emit("change profile info", {
-            msg: "Invalid Password",
-            msgColor: "red"
-          });
-        }
-        let sql = {
-          email: "UPDATE users SET email = ? WHERE id = ?",
-          password: "UPDATE users SET password = ? WHERE id = ?"
-        };
-        let newData =
-          data.newDataType === "password"
-            ? hash(data.newData)
-            : data.newData.toLowerCase();
-        dbConn.query(
-          sql[data.newDataType],
-          [newData, data.userID],
-          (err, result, fields) => {
-            if (err) throw err;
-            client.emit("change profile info", {
-              msg: "Saved",
-              msgColor: "green"
+    pool.getConnection((error, conn) => {
+      conn.query(
+        "SELECT username FROM users WHERE password = ?",
+        [hash(data.password)],
+        (err, result, fields) => {
+          if (err) throw err;
+          if (result.length === 0) {
+            return client.emit("change profile info", {
+              msg: "Invalid Password",
+              msgColor: "red"
             });
           }
-        );
-      }
-    );
+          let sql = {
+            email: "UPDATE users SET email = ? WHERE id = ?",
+            password: "UPDATE users SET password = ? WHERE id = ?"
+          };
+          let newData =
+            data.newDataType === "password"
+              ? hash(data.newData)
+              : data.newData.toLowerCase();
+          conn.query(
+            sql[data.newDataType],
+            [newData, data.userID],
+            (err, result, fields) => {
+              conn.release();
+              if (err) throw err;
+              client.emit("change profile info", {
+                msg: "Saved",
+                msgColor: "green"
+              });
+            }
+          );
+        }
+      );
+    });
   });
 
   //file upload
@@ -158,6 +183,7 @@ io.on("connection", client => {
   uploader.listen(client);
 
   uploader.on("start", event => {
+    console.log("uploader on start");
     //set directory based on upload type
     const obj = {
       CHANGE_AVATAR: "/Users/Admin/my-express-app/client/src/img",
@@ -168,16 +194,18 @@ io.on("connection", client => {
   });
 
   uploader.on("saved", event => {
+    console.log("uploader on saved");
     //perform a different query for each specific upload type
     //possible upload types include: changing avatar image and uploading new
     //image for experience
     const obj = {
       CHANGE_AVATAR: () => {
-        dbConn.query(
+        pool.query(
           "UPDATE users SET avatar = ? WHERE id = ?",
           [event.file.name, event.file.meta.userId],
           (err, result, fields) => {
             if (err) throw err;
+            console.log("uploader on saved - after update query");
             client.emit("upload file done", event.file.name);
           }
         );
@@ -188,7 +216,7 @@ io.on("connection", client => {
         let today = [d.getFullYear(), d.getMonth(), d.getDate()];
         let todaysDate = today.join("-");
         //save to database
-        dbConn.query(
+        pool.query(
           "INSERT INTO experience (user_id, proof, date_added) VALUES (?, ?, ?)",
           [event.file.meta.userId, event.file.name, todaysDate],
           (err, result, fields) => {
