@@ -17,9 +17,7 @@ console.log(cachedSession);
 
 //create redux store with initial state as cached session if exists
 const reduxStore = createStore(userSession, { user: cachedSession });
-const unsubscribe = reduxStore.subscribe(() =>
-  console.log(reduxStore.getState())
-);
+reduxStore.subscribe(() => console.log(reduxStore.getState()));
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={reduxStore}>
@@ -28,4 +26,3 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById("root")
 );
-registerServiceWorker();
