@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Ladder } from "./Ladder";
-import { Navbar } from "react-materialize";
+import Ladder from "./Ladder";
+import { Navbar, Preloader } from "react-materialize";
 import { Route, Switch, Redirect, Link } from "react-router-dom";
 import Profile from "./UserProfile";
 import LoginPage from "./containers/LoginPage";
@@ -40,11 +40,21 @@ class Main extends Component {
           </Switch>
         ) : (
           <Switch>
-            <Route exact path="/" component={Ladder} />
+            <Route
+              exact
+              path="/"
+              render={() => <Ladder loading={this.props.loading} />}
+            />
             <Route
               exact
               path="/users"
-              render={obj => <UsersAll history={obj.history} socket={socket} />}
+              render={obj => (
+                <UsersAll
+                  history={obj.history}
+                  socket={socket}
+                  loading={this.props.loading}
+                />
+              )}
             />
             <Route
               path="/users/:username"
@@ -54,6 +64,7 @@ class Main extends Component {
                   match={obj.match}
                   profileType="view"
                   socket={socket}
+                  loading={this.props.loading}
                 />
               )}
             />
@@ -66,6 +77,7 @@ class Main extends Component {
                   match={obj.match}
                   reduxStore={this.props.userSession}
                   socket={socket}
+                  loading={this.props.loading}
                 />
               )}
             />
@@ -121,7 +133,12 @@ class Main extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { reduxState: this.props.reduxState.getState() };
+    this.state = {
+      reduxState: this.props.reduxState.getState()
+    };
+  }
+  setLoader() {
+    return <Preloader size="big" className="loading" />;
   }
   componentDidMount() {
     this.props.reduxState.subscribe(() => {
@@ -130,6 +147,8 @@ class App extends Component {
     });
   }
   render() {
+    console.log(window.innerHeight);
+    let loggedIn = Object.keys(this.state.reduxState.user).length;
     return (
       <div>
         <Navbar brand="RepUp" href="#" right options={{ closeOnClick: true }}>
@@ -143,11 +162,11 @@ class App extends Component {
             <Link to="/new-rep">New Rep</Link>
           </li>
           <li>
-            <LogOutLink />
+            {loggedIn > 0 ? <LogOutLink /> : <Link to="/login">Log In</Link>}
           </li>
         </Navbar>
-        <Main userSession={this.state.reduxState} />
-        <Footer />
+        <Main userSession={this.state.reduxState} loading={this.setLoader()} />
+        {loggedIn > 0 ? <Footer /> : null}
       </div>
     );
   }

@@ -77,7 +77,7 @@ class ChangeProfileInfo extends Component {
   }
   updateState(data) {
     //dispatch the redux action
-    this.props[this.sate.reduxDispatch](data);
+    this.props[this.state.reduxDispatch](data);
   }
   updateSessionStorage(user) {
     //set new sessionStorage with newly updated setState

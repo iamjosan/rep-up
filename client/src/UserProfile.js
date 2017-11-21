@@ -46,7 +46,7 @@ class Profile extends Component {
 
   render() {
     return this.state.user === null ? (
-      <p>Loading...</p>
+      this.props.loading
     ) : (
       <div>
         <ProfileHeader user={this.state.user} />

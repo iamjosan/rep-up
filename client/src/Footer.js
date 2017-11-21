@@ -36,7 +36,7 @@ class NavButton extends Component {
   }
 
   navigateTo(e) {
-    e.preventDefault;
+    e.preventDefault();
     this.props.history.push(this.props.pathTo);
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Input, Icon, Autocomplete } from "react-materialize";
+import { Row, Autocomplete } from "react-materialize";
 import "./search-bar.css";
 
 class SearchBar extends Component {

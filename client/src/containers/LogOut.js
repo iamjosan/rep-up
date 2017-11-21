@@ -7,7 +7,7 @@ class LogOut extends Component {
   }
 
   onClick(e) {
-    e.preventDefault;
+    e.preventDefault();
     //delete session
     sessionStorage.clear();
     //update redux state

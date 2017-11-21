@@ -24,7 +24,7 @@ class UsersAll extends Component {
 
   render() {
     return this.state.users.length === 0 ? (
-      <p>Loading...</p>
+      this.props.loading
     ) : (
       <div>
         <SearchBar

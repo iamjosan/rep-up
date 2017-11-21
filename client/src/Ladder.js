@@ -30,7 +30,7 @@ class Ladder extends Component {
       );
     });
     return this.state.row.length === 0 ? (
-      <p>Loading...</p>
+      this.props.loading
     ) : (
       <Collection>
         <CollectionItem key={0}>
@@ -46,4 +46,4 @@ class Ladder extends Component {
   }
 }
 
-export { Ladder };
+export default Ladder;
