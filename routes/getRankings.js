@@ -12,10 +12,13 @@ const d = new Date(),
   dateToday = today.join("-");
 
 router.get("/", (req, res) => {
-  dbConn.query(sql, ["2017-09-01", dateToday], (err, result, fields) => {
-    if (err) throw err;
+  dbConn.getConnection((error, conn) => {
+    conn.query(sql, ["2017-09-01", dateToday], (err, result, fields) => {
+      conn.release();
+      if (err) throw err;
 
-    res.json(result);
+      res.json(result);
+    });
   });
 });
 
