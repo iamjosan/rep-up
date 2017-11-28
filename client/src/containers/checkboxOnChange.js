@@ -1,13 +1,17 @@
 export function onChange() {
   return function(e) {
-    if (e.target.checked) {
+    //save event in variable
+    let target = e.target;
+    if (target.checked) {
       return this.setState((prevState, props) => {
-        checked: [...prevState, e.target.value];
+        return { checked: [...prevState.checked, target.value] };
       });
     }
     //remove this value from state
     this.setState((prevState, props) => {
-      checked: [...prevState.filter(item => item !== e.target.value)];
+      return {
+        checked: [...prevState.checked.filter(item => item !== target.value)]
+      };
     });
   };
 }
