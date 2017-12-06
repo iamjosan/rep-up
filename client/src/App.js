@@ -123,7 +123,9 @@ class Main extends Component {
             </Route>
             <Route
               path="/admin/new-rep"
-              render={() => <GetNewRep loading={this.props.loading} />}
+              render={() => (
+                <GetNewRep loading={this.props.loading} socket={socket} />
+              )}
             />
             <Route path="*">
               <Redirect to="/" />

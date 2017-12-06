@@ -1,6 +1,9 @@
 @import url("http://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css");
 
+body {
+  padding-bottom: 66px;
+}
 .App {
   text-align: center;
 }

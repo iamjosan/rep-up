@@ -3,7 +3,7 @@ import { Row, Col, Collection, CollectionItem, Input } from "react-materialize";
 
 export default function ForApproval(props) {
   return (
-    <CollectionItem>
+    <CollectionItem className="for-approval">
       <Row>
         <Col s={2}>
           <Input

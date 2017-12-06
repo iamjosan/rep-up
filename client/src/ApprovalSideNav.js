@@ -24,7 +24,7 @@ class ApprovalSideNav extends Component {
           Select None
         </SideNavItem>
         <SideNavItem>
-          <Button waves="light" onclick={this.props.approve}>
+          <Button waves="light" onClick={this.props.approve}>
             Approve
           </Button>
         </SideNavItem>
