@@ -11,7 +11,8 @@ import UsersAll from "./UsersAll";
 import NewRep from "./NewRep";
 import Register from "./Register";
 import UpdateProfile from "./containers/UpdateProfile";
-import GetNewRep from "./GetNewRep";
+import GetNewReps from "./GetNewReps";
+import GetNewUsers from "./GetNewUsers";
 import io from "socket.io-client";
 
 const socket = io();
@@ -122,9 +123,15 @@ class Main extends Component {
               <Redirect to="/" />
             </Route>
             <Route
-              path="/admin/new-rep"
+              path="/admin/new-reps"
               render={() => (
-                <GetNewRep loading={this.props.loading} socket={socket} />
+                <GetNewReps loading={this.props.loading} socket={socket} />
+              )}
+            />
+            <Route
+              path="/admin/new-users"
+              render={() => (
+                <GetNewUsers loading={this.props.loading} socket={socket} />
               )}
             />
             <Route path="*">

@@ -6,7 +6,7 @@ import ApprovalSideNav from "./ApprovalSideNav";
 import { selectAll, approval } from "./ForApprovalMethods";
 import "./fade-away.css";
 
-class GetNewRep extends Component {
+class GetNewReps extends Component {
   constructor(props) {
     super(props);
     this.state = { rep: [], checked: [] };
@@ -17,7 +17,7 @@ class GetNewRep extends Component {
 
   componentDidMount() {
     //fetch new reps from database
-    fetch("/get-new-rep")
+    fetch("/get-new-reps")
       .then(res => res.json())
       .then(res => {
         this.setState({ rep: res });
@@ -72,4 +72,4 @@ class GetNewRep extends Component {
   }
 }
 
-export default GetNewRep;
+export default GetNewReps;
