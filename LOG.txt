@@ -1,0 +1,31 @@
+*/
+* LOG
+*
+* Key *
+--------
+$: 'done'
+*: 'needs to be done'
+----------
+*/
+
+Dec 6, 2017
+$ admin/get-new-users is fully-functional
+* create admin page that holds get-new-users & get-new-reps
+* create functionality to give users admin access (involves database)
+* create "forgot password" component and add to login page
+* add "register" link in login page
+* have users verify their email address
+-----------------------------------------------------------------------------
+Dec 5, 2017
+Get new rep is fully-functional. Replicate for get new users.
+-----------------------------------------------------------------------------
+Dec 1, 2017
+*when experiences(reps) are approved in the admin area, the new rep count is
+not updated for the user(admin) that is logged in (it's not updated in the
+profile page)
+------------------------------------------------------------------------------
+Nov 21, 2017
+$ Create admin dashboard where admins can approve users and new experience uploads
+$ After approval, email will be sent to user notifying them of approval
+Create component that re-sends registration email to user
+Create "forgot password" component
