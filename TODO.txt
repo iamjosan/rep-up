@@ -2,6 +2,11 @@
 * TO DO
 */
 
+Dec 1, 2017
+*when experiences(reps) are approved in the admin area, the new rep count is
+not updated for the user(admin) that is logged in (it's not updated in the
+profile page)
+------------------------------------------------------------------------------
 Nov 21, 2017
 Create admin dashboard where admins can approve users and new experience uploads
 After approval, email will be sent to user notifying them of approval
