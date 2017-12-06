@@ -2,6 +2,9 @@
 * TO DO
 */
 
+Dec 5, 2017
+Get new rep is fully-functional. Replicate for get new users.
+-----------------------------------------------------------------------------
 Dec 1, 2017
 *when experiences(reps) are approved in the admin area, the new rep count is
 not updated for the user(admin) that is logged in (it's not updated in the
