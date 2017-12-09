@@ -30,6 +30,7 @@ class UsersAll extends Component {
         <SearchBar
           history={this.props.history}
           fetchedUsers={this.state.users}
+          path="/users/"
         />
         <UserGrid fetchedUsers={this.state.users} />
       </div>

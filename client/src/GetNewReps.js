@@ -5,6 +5,7 @@ import { onChange } from "./containers/checkboxOnChange";
 import ApprovalSideNav from "./ApprovalSideNav";
 import { selectAll, approval } from "./ForApprovalMethods";
 import "./fade-away.css";
+import AdminBreadcrumb from "./AdminBreadcrumb";
 
 class GetNewReps extends Component {
   constructor(props) {
@@ -20,7 +21,15 @@ class GetNewReps extends Component {
     fetch("/get-new-reps")
       .then(res => res.json())
       .then(res => {
-        this.setState({ rep: res });
+        var userState;
+        if (res.length === 0) {
+          userState = [
+            { id: "null", username: "No New Reps", proof: "At This Time" }
+          ];
+        } else {
+          userState = res;
+        }
+        this.setState({ rep: userState });
         this.approve = approval(
           "approve",
           "rep",
@@ -36,7 +45,7 @@ class GetNewReps extends Component {
       });
   }
   render() {
-    //console.log(this.state.rep);
+    console.log(this.state.rep);
     const repAll = this.state.rep.map((rep, i) => {
       return (
         <ForApproval
@@ -48,26 +57,31 @@ class GetNewReps extends Component {
         />
       );
     });
-    return this.state.rep.length === 0 ? (
-      this.props.loading
-    ) : (
-      <Collection>
-        <CollectionItem>
-          <Row>
-            <Col s={2}>
-              <ApprovalSideNav
-                selectAll={this.selectAll}
-                selectNone={this.selectNone}
-                approve={this.approve}
-                reject={this.reject}
-              />
-            </Col>
-            <Col s={5}>Username</Col>
-            <Col s={5}>Image</Col>
-          </Row>
-        </CollectionItem>
-        {repAll}
-      </Collection>
+    return (
+      <div>
+        <AdminBreadcrumb currentPage="New Reps" />
+        {this.state.rep.length === 0 ? (
+          this.props.loading
+        ) : (
+          <Collection style={{ marginBottom: 0 }}>
+            <CollectionItem>
+              <Row>
+                <Col s={2}>
+                  <ApprovalSideNav
+                    selectAll={this.selectAll}
+                    selectNone={this.selectNone}
+                    approve={this.approve}
+                    reject={this.reject}
+                  />
+                </Col>
+                <Col s={5}>Username</Col>
+                <Col s={5}>Image</Col>
+              </Row>
+            </CollectionItem>
+            {repAll}
+          </Collection>
+        )}
+      </div>
     );
   }
 }

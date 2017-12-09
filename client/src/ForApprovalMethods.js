@@ -11,6 +11,11 @@ function selectAll(bool) {
 }
 
 function approval(status, type, socket, state) {
+  //if one of the inputs has a null value
+  //stop the operation
+  //this is to prevent to submission of a "no new reps or user"
+  const noNull = state.every(s => s.id != "null");
+  if (!noNull) return;
   return function() {
     const inputChecked = Array.from(
       document.querySelectorAll('input[type="checkbox"]')

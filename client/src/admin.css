@@ -1,0 +1,7 @@
+#admin .card-content {
+  text-align: center;
+}
+#admin .card-content i {
+  position: relative;
+  top: 7px;
+}

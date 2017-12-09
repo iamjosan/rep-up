@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
     conn.query(sql, (err, result, fields) => {
       conn.release();
       if (err) throw err;
+      console.log(result);
       res.json(result);
     });
   });

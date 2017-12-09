@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col, Collection, CollectionItem, Input } from "react-materialize";
+import "./for-approval.css";
 
 export default function ForApproval(props) {
   return (

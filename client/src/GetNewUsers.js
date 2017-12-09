@@ -5,6 +5,7 @@ import { onChange } from "./containers/checkboxOnChange";
 import ApprovalSideNav from "./ApprovalSideNav";
 import { selectAll, approval } from "./ForApprovalMethods";
 import "./fade-away.css";
+import AdminBreadcrumb from "./AdminBreadcrumb";
 
 class GetNewUsers extends Component {
   constructor(props) {
@@ -20,7 +21,16 @@ class GetNewUsers extends Component {
     fetch("/get-new-users")
       .then(res => res.json())
       .then(res => {
-        this.setState({ users: res });
+        console.log(res);
+        var userState;
+        if (res.length === 0) {
+          userState = [
+            { id: "null", username: "No New Users", gll_name: "At This Time" }
+          ];
+        } else {
+          userState = res;
+        }
+        this.setState({ users: userState });
         this.approve = approval(
           "approve",
           "users",
@@ -36,7 +46,7 @@ class GetNewUsers extends Component {
       });
   }
   render() {
-    //console.log(this.state.user);
+    console.log(this.state.users);
     const userAll = this.state.users.map((user, i) => {
       return (
         <ForApproval
@@ -48,26 +58,36 @@ class GetNewUsers extends Component {
         />
       );
     });
-    return this.state.users.length === 0 ? (
-      this.props.loading
-    ) : (
-      <Collection>
-        <CollectionItem>
-          <Row>
-            <Col s={2}>
-              <ApprovalSideNav
-                selectAll={this.selectAll}
-                selectNone={this.selectNone}
-                approve={this.approve}
-                reject={this.reject}
-              />
-            </Col>
-            <Col s={5}>Username</Col>
-            <Col s={5}>GLL Name</Col>
-          </Row>
-        </CollectionItem>
-        {userAll}
-      </Collection>
+    return (
+      <div>
+        <AdminBreadcrumb
+          paths={[
+            { link: "/admin", name: "Admin" },
+            { link: "#", name: "Get New Users" }
+          ]}
+        />
+        {this.state.users.length === 0 ? (
+          this.props.loading
+        ) : (
+          <Collection>
+            <CollectionItem>
+              <Row style={{ marginBottom: 0 }}>
+                <Col s={2}>
+                  <ApprovalSideNav
+                    selectAll={this.selectAll}
+                    selectNone={this.selectNone}
+                    approve={this.approve}
+                    reject={this.reject}
+                  />
+                </Col>
+                <Col s={5}>Username</Col>
+                <Col s={5}>GLL Name</Col>
+              </Row>
+            </CollectionItem>
+            {userAll}
+          </Collection>
+        )}
+      </div>
     );
   }
 }

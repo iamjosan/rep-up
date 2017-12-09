@@ -2,7 +2,7 @@ function fetchUsersAll(socket, dbConn) {
   socket.on("fetch users all", data => {
     dbConn.getConnection((error, conn) => {
       conn.query(
-        "SELECT username, avatar FROM users WHERE approved = 1",
+        "SELECT id, username, avatar, admin FROM users WHERE approved = 1",
         (err, result, fields) => {
           conn.release();
           if (err) throw err;

@@ -13,6 +13,9 @@ import Register from "./Register";
 import UpdateProfile from "./containers/UpdateProfile";
 import GetNewReps from "./GetNewReps";
 import GetNewUsers from "./GetNewUsers";
+import Admin from "./Admin";
+import ViewUsers from "./ViewUsers";
+import ViewSingleUser from "./ViewSingleUser";
 import io from "socket.io-client";
 
 const socket = io();
@@ -115,13 +118,14 @@ class Main extends Component {
             />
             <Route
               path="/new-rep"
-              render={ob => (
+              render={() => (
                 <NewRep reduxStore={this.props.userSession} socket={socket} />
               )}
             />
             <Route path="/login">
               <Redirect to="/" />
             </Route>
+            <Route exact path="/admin" component={Admin} />
             <Route
               path="/admin/new-reps"
               render={() => (
@@ -132,6 +136,26 @@ class Main extends Component {
               path="/admin/new-users"
               render={() => (
                 <GetNewUsers loading={this.props.loading} socket={socket} />
+              )}
+            />
+            <Route
+              path="/admin/view-users/:username"
+              render={obj => (
+                <ViewSingleUser
+                  match={obj.match}
+                  socket={socket}
+                  loading={this.props.loading}
+                />
+              )}
+            />
+            <Route
+              path="/admin/view-users"
+              render={obj => (
+                <ViewUsers
+                  history={obj.history}
+                  socket={socket}
+                  loading={this.props.loading}
+                />
               )}
             />
             <Route path="*">

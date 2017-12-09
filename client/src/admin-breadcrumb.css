@@ -1,0 +1,11 @@
+.admin-breadcrumb {
+  position: relative;
+  padding: 15px 0;
+}
+.admin-breadcrumb a {
+  position: relative;
+  top: -5px;
+}
+.admin-breadcrumb a:last-child {
+  color: #666;
+}

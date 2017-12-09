@@ -3,14 +3,23 @@
 *
 * Key *
 --------
-$: 'done'
+$: 'done' or 'fixed'
 *: 'needs to be done'
 ----------
 */
-
+Dec 8, 2017
+* In admin/view-users/:username, the user's state is not being retrieved
+from the <Profile /> component. It's getting the initial state of null but
+we need to get the state when it has been set. I tried using a promise but it
+looks like I will have to re-structure it.
+-----------------------------------------------------------------------------
+Dec 7, 2017
+$ GetNewReps and GetNewUsers loads forever when there are no new users or reps
+* Make admin page where you can see and edit all users
+-----------------------------------------------------------------------------
 Dec 6, 2017
 $ admin/get-new-users is fully-functional
-* create admin page that holds get-new-users & get-new-reps
+$ create admin page that holds get-new-users & get-new-reps
 * create functionality to give users admin access (involves database)
 * create "forgot password" component and add to login page
 * add "register" link in login page

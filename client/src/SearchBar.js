@@ -35,7 +35,7 @@ class SearchBar extends Component {
           data={this.state.users}
           onAutocomplete={val => {
             console.log(val);
-            this.props.history.push("./users/" + val);
+            this.props.history.push(this.props.path + val);
           }}
         />
       </Row>
