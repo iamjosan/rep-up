@@ -35,13 +35,9 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    const p = new Promise((resolve, reject) => {
-      this.profileTypeData(this.props.profileType)();
-      resolve(this.state);
-    });
-    if (this.props.extractState) {
-      p.then(res => this.props.extractState(res));
-    }
+    this.profileTypeData(this.props.profileType)(
+      this.props.extractState({ user: this.state.user })
+    );
   }
 
   componentWillReceiveProps(newProps) {

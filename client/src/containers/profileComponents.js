@@ -1,12 +1,15 @@
 export function userProfile(type, prop, stateSetter, socket = null) {
   const obj = {
-    fetch: () => {
+    fetch: (callback = null) => {
       //send data to server
       //prop will be the match.params.username from Router
       socket.emit("fetch user", prop);
       //listen to server to receive data
       socket.on("send user", userInfo => {
-        stateSetter({ user: userInfo[0] });
+        stateSetter({ user: userInfo[0] }, () => {
+          console.log("inside setState callback");
+          callback;
+        });
       });
     },
     store: () => {
