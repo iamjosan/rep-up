@@ -7,8 +7,13 @@ $: 'done' or 'fixed'
 *: 'needs to be done'
 ----------
 */
+
+Dec 15, 2017
+* To get state from <Profile /> component, let's try passing a callback to
+setState()
+-----------------------------------------------------------------------------
 Dec 8, 2017
-$ In admin/view-users/:username, the user's state is not being retrieved
+* In admin/view-users/:username, the user's state is not being retrieved
 from the <Profile /> component. It's getting the initial state of null but
 we need to get the state when it has been set. I tried using a promise but it
 looks like I will have to re-structure it.
