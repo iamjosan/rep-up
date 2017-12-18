@@ -7,8 +7,13 @@ export function userProfile(type, prop, stateSetter, socket = null) {
       //listen to server to receive data
       socket.on("send user", userInfo => {
         stateSetter({ user: userInfo[0] }, () => {
-          console.log("inside setState callback");
-          callback;
+          if (callback) {
+            callback({
+              user: userInfo[0],
+              admin: userInfo[0].admin,
+              ban: userInfo[0].ban
+            });
+          }
         });
       });
     },

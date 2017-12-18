@@ -63,7 +63,7 @@ class GetNewUsers extends Component {
         <AdminBreadcrumb
           paths={[
             { link: "/admin", name: "Admin" },
-            { link: "#", name: "Get New Users" }
+            { link: "#", name: "New Users" }
           ]}
         />
         {this.state.users.length === 0 ? (

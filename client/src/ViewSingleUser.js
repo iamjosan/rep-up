@@ -7,13 +7,26 @@ import "./view-single-user.css";
 class ViewSingleUser extends Component {
   constructor(props) {
     super(props);
-    this.state = { admin: true, ban: false };
+    this.state = { user: null, admin: null, ban: null };
   }
   toggleSwitch = e => {
     console.log(e.target.checked);
+    this.setState({ [e.target.name]: e.target.checked });
   };
-  save(e) {
-    e.preventDefault();
+  componentWillUnmount() {
+    //if ban and admin values are different from initial state
+    //save the new values to the database
+    const banVal = this.state.ban,
+      adminVal = this.state.admin,
+      { ban, admin, id } = this.state.user;
+
+    if (banVal != ban || adminVal != admin) {
+      this.props.socket.emit("update user privileges", {
+        admin: ~~adminVal,
+        ban: ~~banVal,
+        id: id
+      });
+    }
   }
   render() {
     console.log(this.state);
@@ -33,31 +46,36 @@ class ViewSingleUser extends Component {
           loading={this.props.loading}
           extractState={this.setState.bind(this)}
         />
-        <div className="admin-user-settings">
-          <Collection>
-            <CollectionItem>
-              Admin
-              <Input
-                id="switch-admin"
-                checked={this.state.admin}
-                type="switch"
-                label="Admin"
-                value="1"
-                onClick={this.toggleSwitch}
-              />
-            </CollectionItem>
-            <CollectionItem>
-              Ban
-              <Input
-                type="switch"
-                label="Admin"
-                value="1"
-                onClick={this.toggleSwitch}
-              />
-            </CollectionItem>
-          </Collection>
-          <Button waves="light">Save</Button>
-        </div>
+        {this.state.user === null ? null : (
+          <div className="admin-user-settings">
+            <Collection>
+              <CollectionItem>
+                Admin
+                <Input
+                  id="switch-admin"
+                  name="admin"
+                  checked={this.state.admin}
+                  type="switch"
+                  label="Admin"
+                  value="1"
+                  onClick={this.toggleSwitch}
+                />
+              </CollectionItem>
+              <CollectionItem>
+                Ban
+                <Input
+                  id="switch-ban"
+                  name="ban"
+                  checked={this.state.ban}
+                  type="switch"
+                  label="Admin"
+                  value="1"
+                  onClick={this.toggleSwitch}
+                />
+              </CollectionItem>
+            </Collection>
+          </div>
+        )}
       </div>
     );
   }

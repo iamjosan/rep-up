@@ -42,6 +42,7 @@ const userLogin = require("./userLogin");
 const fetchUsersAll = require("./fetchUsersAll");
 const changeProfileInfo = require("./changeProfileInfo");
 const uploadFile = require("./uploadFile");
+const updateUserPrivileges = require("./updateUserPrivileges");
 
 io.on("connection", client => {
   console.log("client connected");
@@ -52,6 +53,7 @@ io.on("connection", client => {
   userLogin(client, pool, hash);
   fetchUsersAll(client, pool);
   changeProfileInfo(client, pool, hash);
+  updateUserPrivileges(client, pool);
   //file upload
   let uploader = new siofu();
   uploadFile(uploader, client, pool);

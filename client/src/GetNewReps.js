@@ -59,7 +59,12 @@ class GetNewReps extends Component {
     });
     return (
       <div>
-        <AdminBreadcrumb currentPage="New Reps" />
+        <AdminBreadcrumb
+          paths={[
+            { link: "/admin", name: "Admin" },
+            { link: "#", name: "New Reps" }
+          ]}
+        />
         {this.state.rep.length === 0 ? (
           this.props.loading
         ) : (

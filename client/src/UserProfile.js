@@ -6,6 +6,9 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = { user: null };
+    this.extractState = this.props.extractState
+      ? this.props.extractState
+      : null;
   }
 
   profileTypeData(type) {
@@ -35,9 +38,7 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    this.profileTypeData(this.props.profileType)(
-      this.props.extractState({ user: this.state.user })
-    );
+    this.profileTypeData(this.props.profileType)(this.extractState);
   }
 
   componentWillReceiveProps(newProps) {
