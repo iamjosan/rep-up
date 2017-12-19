@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import UploadFile from "./UploadFile.js";
+import AdminBreadcrumb from "./AdminBreadcrumb";
 
 class ChangeAvatar extends Component {
   constructor(props) {
@@ -34,7 +35,6 @@ class ChangeAvatar extends Component {
     console.log(this.state);
     return (
       <div>
-        <h5>Change Avatar</h5>
         <UploadFile
           socket={this.props.socket}
           reduxStore={this.props.reduxStore}

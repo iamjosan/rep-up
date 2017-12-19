@@ -125,7 +125,11 @@ class Main extends Component {
             <Route path="/login">
               <Redirect to="/" />
             </Route>
-            <Route exact path="/admin" component={Admin} />
+            <Route
+              exact
+              path="/admin"
+              render={() => <Admin reduxState={this.props.userSession} />}
+            />
             <Route
               path="/admin/new-reps"
               render={() => (
@@ -198,6 +202,11 @@ class App extends Component {
           <li>
             <Link to="/new-rep">New Rep</Link>
           </li>
+          {this.state.reduxState.user.admin === 1 ? (
+            <li>
+              <Link to="/admin">Admin</Link>
+            </li>
+          ) : null}
           <li>
             {loggedIn > 0 ? <LogOutLink /> : <Link to="/login">Log In</Link>}
           </li>

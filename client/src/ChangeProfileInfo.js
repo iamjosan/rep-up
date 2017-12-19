@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import UploadFile from "./UploadFile.js";
 import InputForProfileChange from "./InputForProfileChange";
+import AdminBreadcrumb from "./AdminBreadcrumb";
 
 class ChangeProfileInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { saved: false };
+    this.state = {
+      saved: false
+    };
   }
   componentDidMount() {
     this.data(this.props.changeType);
@@ -99,7 +102,18 @@ class ChangeProfileInfo extends Component {
     console.log(this.state);
     return (
       <div>
-        <h5>{this.state.title}</h5>
+        <AdminBreadcrumb
+          paths={[
+            {
+              link: "/profile",
+              name: "Profile"
+            },
+            {
+              link: "#",
+              name: this.state.title
+            }
+          ]}
+        />
         {this.UI(this.props.changeType)}
       </div>
     );

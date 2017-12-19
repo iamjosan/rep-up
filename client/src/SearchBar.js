@@ -17,7 +17,6 @@ class SearchBar extends Component {
       userData[user.username] = null;
     });
     this.setState({ users: userData });
-    console.log(userData);
   }
 
   componentDidMount() {
@@ -34,7 +33,6 @@ class SearchBar extends Component {
           limit={10}
           data={this.state.users}
           onAutocomplete={val => {
-            console.log(val);
             this.props.history.push(this.props.path + val);
           }}
         />

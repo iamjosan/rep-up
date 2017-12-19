@@ -11,10 +11,16 @@ function userLogin(socket, dbConn, hash) {
           conn.release();
           if (err) throw err;
           console.log(result);
-          //if user login doesnt match
-          //return false
-          result = result.length > 0 ? result : false;
-          socket.emit("user login", result);
+          var response;
+          if (result.length === 0) {
+            response = { error: true, msg: "Incorrect Login" };
+          } else if (result[0].ban === 1) {
+            response = { error: true, msg: "You have been banned" };
+          } else {
+            response = { error: false, user: result };
+          }
+          console.log("response", response);
+          socket.emit("user login", response);
         }
       );
     });

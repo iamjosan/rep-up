@@ -5,7 +5,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.login();
-    this.state = { error: false };
+    this.state = { error: false, msg: null };
   }
 
   formSubmit(e) {
@@ -18,15 +18,15 @@ class Login extends Component {
 
   login() {
     this.props.socket.on("user login", res => {
-      if (!res) {
-        this.setState({ error: true });
+      if (res.error) {
+        this.setState(res);
         return;
       }
-      console.log(res[0]);
+      console.log(res.user[0]);
       //save session in state
       //and in browser cache
-      this.props.reduxDispatchLogin(res[0]);
-      sessionStorage.setItem("user", JSON.stringify(res[0]));
+      this.props.reduxDispatchLogin(res.user[0]);
+      sessionStorage.setItem("user", JSON.stringify(res.user[0]));
       //redirect to homepage
       this.props.history.push("/");
     });
@@ -42,7 +42,7 @@ class Login extends Component {
             <Input type="password" label="password" s={12} />
             <Button waves="light">Login</Button>
             <span style={{ marginLeft: "15px", color: "red" }}>
-              {this.state.error ? "Incorrect Login" : ""}
+              {this.state.error ? this.state.msg : ""}
             </span>
           </form>
         </Row>

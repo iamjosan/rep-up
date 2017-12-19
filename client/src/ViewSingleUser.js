@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Profile from "./UserProfile";
 import AdminBreadcrumb from "./AdminBreadcrumb";
-import { Input, Button, Collection, CollectionItem } from "react-materialize";
+import { Input, Collection, CollectionItem } from "react-materialize";
 import "./view-single-user.css";
 
 class ViewSingleUser extends Component {
@@ -10,7 +10,6 @@ class ViewSingleUser extends Component {
     this.state = { user: null, admin: null, ban: null };
   }
   toggleSwitch = e => {
-    console.log(e.target.checked);
     this.setState({ [e.target.name]: e.target.checked });
   };
   componentWillUnmount() {
@@ -29,7 +28,6 @@ class ViewSingleUser extends Component {
     }
   }
   render() {
-    console.log(this.state);
     return (
       <div>
         <AdminBreadcrumb
