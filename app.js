@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 //app.use(reactBuild);
 //app.use("/", reactBuild);
-app.use("/", express.static(path.join(__dirname, "/views")));
+app.use("/", express.static(path.join(__dirname, "/views/build")));
 app.use("/db", ladder);
 app.use("/get-new-reps", getNewReps);
 app.use("/get-new-users", getNewUsers);
