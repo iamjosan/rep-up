@@ -10,6 +10,7 @@ const getNewUsers = require("./routes/getNewUsers");
 var app = express();
 
 const reactBuild = express.static(path.join(__dirname, "client/build"));
+console.log("reactBuild path: ", reactBuild);
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
