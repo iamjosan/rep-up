@@ -4,22 +4,21 @@ var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-var index = require("./routes/index");
 const ladder = require("./routes/getRankings");
 const getNewReps = require("./routes/getNewReps");
 const getNewUsers = require("./routes/getNewUsers");
 
 var app = express();
 
+const reactBuild = express.static(path.join(__dirname, "/client/build"));
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-
-app.use("/", index);
+app.use(reactBuild);
+app.use("/", reactBuild);
 app.use("/db", ladder);
 app.use("/get-new-reps", getNewReps);
 app.use("/get-new-users", getNewUsers);

@@ -35,7 +35,7 @@ function UserDescription(props) {
 export const ProfileHeader = props => {
   return (
     <div className="center-align">
-      <Avatar avatar={require("./img/" + props.user.avatar)} />
+      <Avatar avatar={"/img/" + props.user.avatar} />
       <UserDescription username={props.user.username} rep={props.user.rep} />
     </div>
   );

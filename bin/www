@@ -21,6 +21,11 @@ app.set("port", port);
 
 var server = http.createServer(app);
 
+/*
+* Set view engine
+*/
+app.set("view engine", "jade");
+
 /**
  * Listen to browser with socket.io
  */
