@@ -1,3 +1,5 @@
+var path = require("path");
+
 function uploadFile(instance, socket, dbConn) {
   instance.listen(socket);
 
