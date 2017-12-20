@@ -5,8 +5,8 @@ function uploadFile(instance, socket, dbConn) {
     console.log("uploadFile on start");
     //set directory based on upload type
     const obj = {
-      CHANGE_AVATAR: "/Users/Admin/my-express-app/client/build/img/",
-      NEW_REP: "/Users/Admin/my-express-app/client/build/img/proof"
+      CHANGE_AVATAR: path.join(__dirname, "/views/build/img"),
+      NEW_REP: path.join(__dirname, "/views/build/img/proof")
     };
 
     instance.dir = obj[event.file.meta.uploadType];
