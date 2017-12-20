@@ -19,7 +19,7 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(reactBuild);
+//app.use(reactBuild);
 app.use("/", reactBuild);
 app.use("/db", ladder);
 app.use("/get-new-reps", getNewReps);
