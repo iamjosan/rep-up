@@ -1,11 +1,13 @@
 {
-  "name": "my-express-app",
+  "name": "rep-up",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node bin/www",
-    "client": "node start-client.js"
+    "start": "node bin/www",
+    "server": "node bin/www"
+  },
+  "engines": {
+    "node": "^8.1.2"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
