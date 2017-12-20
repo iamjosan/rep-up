@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2017 at 02:12 AM
+-- Generation Time: Dec 20, 2017 at 09:17 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -91,7 +91,9 @@ INSERT INTO `experience` (`id`, `user_id`, `proof`, `date_added`, `approved`) VA
 (50, 1, 'WhatsApp Image 2017-10-23 at 11.21.33 AM.jpeg', '2017-11-05', 1),
 (51, 1, 'YD-1166.jpg', '2017-11-05', 1),
 (52, 1, 'PC-906-907-919 - Copy.jpg', '2017-11-05', 1),
-(53, 1, 'AF7EC8F7-E5E1-4259-BB9E-E33C9465BB7B.png', '2017-11-05', -1);
+(53, 1, 'AF7EC8F7-E5E1-4259-BB9E-E33C9465BB7B.png', '2017-11-05', -1),
+(54, 1, 'ico-tables-mockup.jpg', '2017-11-18', 1),
+(55, 1, '5906-Chiffon Bolero Olive-1b.jpg', '2017-11-19', 0);
 
 -- --------------------------------------------------------
 
@@ -108,22 +110,23 @@ CREATE TABLE `users` (
   `gll_name` varchar(100) NOT NULL,
   `date_join` date NOT NULL,
   `approved` tinyint(1) NOT NULL DEFAULT '0',
-  `admin` int(1) NOT NULL DEFAULT '0'
+  `admin` int(1) NOT NULL DEFAULT '0',
+  `ban` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `avatar`, `gll_name`, `date_join`, `approved`, `admin`) VALUES
-(1, 'josan', 'josan.iracheta@gmail.com', '2952208012', 'josan.jpg', 'josan', '2017-09-29', 1, 0),
-(2, 'adonay', 'adonay@adonay.com', 'adonay123', 'adonay.jpg', 'adonay', '2017-09-29', 1, 0),
-(3, 'eric', 'eric@eric.com', 'eric123', 'eric.jpg', 'eric', '2017-09-29', 1, 0),
-(4, 'jizzy', 'jizzy@jizzy.com', 'jizzy123', 'jizzy.jpg', 'jizzy', '2017-09-29', 1, 0),
-(12, 'nsa', 'vedaco@gmail.com', '3855953577', '56be302cc4e93.image.jpg', 'nsa', '2017-11-07', 1, 0),
-(13, 'staythirsty', 'josan.iracheta@gmail.com', '2952208012', 'avatar.png', 'nsa', '2017-11-15', 1, 0),
-(14, 'fakeaccount', 'josan.iracheta@gmail.com', '2692298652', 'avatar.png', 'fake', '2017-12-06', -1, 0),
-(15, 'fakeaccount2', 'josan.iracheta@gmail.com', '2692298652', 'avatar.png', 'fake2', '2017-12-06', -1, 0);
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `avatar`, `gll_name`, `date_join`, `approved`, `admin`, `ban`) VALUES
+(1, 'josan', 'josan.iracheta@gmail.com', '2952208012', 'beach-edit.jpg', 'josan', '2017-09-29', 1, 1, 0),
+(2, 'adonay', 'adonay@adonay.com', 'adonay123', 'adonay.jpg', 'adonay', '2017-09-29', 1, 0, 0),
+(3, 'eric', 'eric@eric.com', '2692376552', 'eric.jpg', 'eric', '2017-09-29', 1, 1, 0),
+(4, 'jizzy', 'jizzy@jizzy.com', 'jizzy123', 'jizzy.jpg', 'jizzy', '2017-09-29', 1, 0, 0),
+(12, 'nsa', 'vedaco@gmail.com', '3855953577', '56be302cc4e93.image.jpg', 'nsa', '2017-11-07', 1, 0, 0),
+(13, 'staythirsty', 'josan.iracheta@gmail.com', '2952208012', 'avatar.png', 'nsa', '2017-11-15', 1, 0, 0),
+(14, 'fakeaccount', 'josan.iracheta@gmail.com', '2692298652', 'avatar.png', 'fake', '2017-12-06', -1, 0, 0),
+(15, 'fakeaccount2', 'josan.iracheta@gmail.com', '2692298652', 'avatar.png', 'fake2', '2017-12-06', -1, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -149,7 +152,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `experience`
 --
 ALTER TABLE `experience`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT for table `users`
 --
