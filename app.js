@@ -11,7 +11,7 @@ var app = express();
 /*
 * Set view engine
 */
-app.set("view engine", "html");
+//app.set("view engine", "html");
 
 const reactBuild = express.static(path.join(__dirname, "/client/build"));
 console.log("__dirname: ", __dirname);
@@ -40,7 +40,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  console.log("there was an error");
+  //res.render("error");
 });
 
 module.exports = app;
