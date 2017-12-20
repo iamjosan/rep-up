@@ -8,6 +8,10 @@ const getNewReps = require("./routes/getNewReps");
 const getNewUsers = require("./routes/getNewUsers");
 
 var app = express();
+/*
+* Set view engine
+*/
+app.set("view engine", "html");
 
 const reactBuild = express.static(path.join(__dirname, "/client/build"));
 console.log("__dirname: ", __dirname);
