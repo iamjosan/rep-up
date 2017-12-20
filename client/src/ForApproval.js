@@ -15,7 +15,11 @@ export default function ForApproval(props) {
           />
         </Col>
         <Col s={5}>{props.col2}</Col>
-        <Col s={5}>{props.col3}</Col>
+        <Col s={5}>
+          <a href={"/img/" + props.col3} targe="_blank">
+            Proof
+          </a>
+        </Col>
       </Row>
     </CollectionItem>
   );
