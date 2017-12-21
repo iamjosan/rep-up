@@ -1,10 +1,10 @@
 # Rep Up
 A ranking-ladder made with React, Express, Node.js, and MySQL.
-See it in action here: <http://rep-up.herokuapp.com>
+
+Live demo: <http://rep-up.herokuapp.com>
 
 Login credentials:
-user: github
-password: github2017
+user: github, password: github2017
 
 ## Overview
 Keep track of each user's points in a game. The model is based on providing proof of completion of a certain task.
