@@ -1,6 +1,7 @@
 # Rep Up
 A ranking-ladder made with React, Express, Node.js, and MySQL.
-See it in action here: <//rep-up.herokuapp.com>
+See it in action here: <http://rep-up.herokuapp.com>
+
 Login credentials:
 user: github
 password: github2017
