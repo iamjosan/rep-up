@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Row, Input, Button } from "react-materialize";
+import { Link } from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <h2>Login Page</h2>
+        <h4>Login Page</h4>
         <Row>
           <form onSubmit={this.formSubmit.bind(this)}>
             <Input type="text" label="username" s={12} />
@@ -46,6 +47,7 @@ class Login extends Component {
             </span>
           </form>
         </Row>
+        <Link to="/register">New Users Register Here</Link>
       </div>
     );
   }
