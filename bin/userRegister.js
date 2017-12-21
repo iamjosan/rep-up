@@ -38,7 +38,7 @@ function userRegister(socket, dbConn, sendMail, hash) {
               let body = `
 <p>Thanks for registering to Rep-Up!</p>
 <p>Please be patient while we approve your account. Once we approve it, we will notify you via email.</p>
-<p>Thank you!
+<p>Thank you!\n\n
 The Rep-Up Team</p>`;
               sendMail(email, "Please Verify Your Rep Up Account", body);
               socket.emit("user register", {
