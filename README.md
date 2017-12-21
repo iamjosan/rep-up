@@ -1,10 +1,7 @@
 # Rep Up
 A ranking-ladder made with React, Express, Node.js, and MySQL.
-
-See it in action here: <rep-up.herokuapp.com>
-
+See it in action here: <//rep-up.herokuapp.com>
 Login credentials:
-
 user: github
 password: github2017
 
@@ -29,3 +26,6 @@ View all users on a grid or search for any user. Uses autocomplete.
 
 ### User Profile
 Users can view and edit their profile information.
+
+## License
+MIT License
