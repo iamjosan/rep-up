@@ -8,19 +8,20 @@ function newApproval(socket, dbConn, sendMail) {
       approve: {
         sql: "UPDATE * SET approved = 1 WHERE id IN (?)",
         emailSubject: "Approved",
-        emailBody: `Approved!\n\n
-Log in to see what's happening!\n\n
-Best,\n
-The Rep Up Team`
+        emailBody: `<p>Approved!</p>
+<p>Log in to see what's happening!</p>
+<p>Best,</p>
+<p>The Rep Up Team</p>`
       },
       reject: {
         sql: "UPDATE * SET approved = -1 WHERE id IN (?)",
         emailSubject: "Rejected",
-        emailBody: `Sorry,\n\n
-Rejections are final. If your account was rejected, there's nothing you can do.
-If your rep was rejected, try submitting better proof.\n\n
-Sincerely,\n
-The Rep Up Team`
+        emailBody: `<p>Sorry,
+Rejections are final.<p>
+<p>If your account was rejected, there's nothing you can do.
+If your rep was rejected, try submitting better proof.</p>
+<p>Sincerely,</p>
+<p>The Rep Up Team</p>`
       }
     };
     const type = {
