@@ -5,7 +5,7 @@ function sendMail(toEmail, subject, body) {
     service: "gmail",
     auth: {
       user: "repup.help@gmail.com",
-      pass: "Repadmin2017!"
+      pass: "Sage2017#!ru"
     }
   });
 
