@@ -58,7 +58,7 @@ class Register extends Component {
     //console.log(this.state);
     return (
       <div>
-        <h2>Register</h2>
+        <h4>Register</h4>
         <Row>
           <form onSubmit={this.formSubmit.bind(this)}>
             <Input

@@ -36,10 +36,10 @@ function userRegister(socket, dbConn, sendMail, hash) {
               if (err) throw err;
               //send email if user registered successfully
               let body = `
-<p>Thanks for registering to Rep Up!</p>
-<p>While you wait for your account to be approved, please verify your email address by following this link:
-<a href="http://repupserver.com/verify/${email}">Verify Email Address</a></p>
-<p>Thank you!\nRep Up Team</p>`;
+<p>Thanks for registering to Rep-Up!</p>
+<p>Please be patient while we approve your account. Once we approve it, we will notify you via email.</p>
+<p>Thank you!
+The Rep-Up Team</p>`;
               sendMail(email, "Please Verify Your Rep Up Account", body);
               socket.emit("user register", {
                 msg: "Awaiting Approval",
